@@ -2,11 +2,7 @@
   <div class="container-fluid my-2">
     <div>
       <h1>{{ title }}</h1>
-      <div class="row">
-        <div class="col-6">
-          <Counter CounterTitle="Counter" />
-        </div>
-      </div>
+      <h2>Under construction</h2>
       <div class="row">
         <div class="col-12 my-2">
           <button class="btn btn-outline-info mr-2" @click="callApi(false)">
@@ -22,8 +18,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import Counter from "@/components/Counter.vue";
 import Configuration from "../configuration";
 import WebApiService from "../services/webApi.service";
 import * as toastr from "toastr";
@@ -36,15 +30,12 @@ toastr.options = {
 };
 
 const data = {
-  title: "Hello, world!"
+  title: "FCF Verses"
 };
 
 export default {
   name: "home",
   data: () => data,
-  components: {
-    Counter
-  },
   methods: {
     callApi: async function(authorizedEndpoint) {
       var response = authorizedEndpoint

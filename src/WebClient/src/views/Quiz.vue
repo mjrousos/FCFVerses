@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>About FCF Verses</h1>
+    <h1>Memory Verse Quiz</h1>
     <h2>Under construction</h2>
   </div>
 </template>

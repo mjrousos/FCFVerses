@@ -8,12 +8,17 @@ import "./styles/style.scss";
 
 Vue.config.productionTip = false;
 
+async function initializeState() {
+  // Populate initial user info from MSAL
+  await store.dispatch("refreshUser");
+  await store.dispatch("markAppInitialized");
+}
+
 new Vue({
   router,
   store,
   created() {
-    // Populate initial user info from MSAL
-    store.dispatch("refreshUser");
+    initializeState();
   },
   render: h => h(App)
 }).$mount("#app");

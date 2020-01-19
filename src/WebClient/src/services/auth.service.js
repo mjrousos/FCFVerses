@@ -106,7 +106,7 @@ class AuthService {
     }
   }
 
-  async getAccessTokenAsync(scopes, popup) {
+  async getAccessTokenAsync(scopes, popup, suppressRedirect) {
     if (!scopes && Configuration.authSettings.appIdUri) {
       scopes = [`${Configuration.authSettings.appIdUri}/user_impersonation`];
     }
@@ -118,6 +118,9 @@ class AuthService {
       var tokenResponse = await this.msalApp.acquireTokenSilent(tokenRequest);
       return tokenResponse.accessToken;
     } catch (error) {
+      if (suppressRedirect) {
+        return null;
+      }
       if (error.name === "InteractionRequiredAuthError") {
         if (popup) {
           tokenResponse = await this.msalApp.acquireTokenPopup(tokenRequest);

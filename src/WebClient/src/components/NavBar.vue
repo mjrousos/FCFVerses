@@ -47,3 +47,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.logo-icon {
+  max-width: 50px;
+  margin-right: 0.5rem;
+}
+</style>

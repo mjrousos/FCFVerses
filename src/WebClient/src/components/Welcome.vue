@@ -8,12 +8,14 @@
       verses for groups you're part of or for personal study.
     </p>
     <a class="btn btn-lg btn-primary" href="#" v-on:click="login" role="button">
-      Get Started
+      <font-awesome-icon :icon="['fas', 'bible']" class="mr-1" /> Get Started
     </a>
     <a class="btn btn-lg btn-primary" href="/about" role="button">
+      <font-awesome-icon :icon="['far', 'question-circle']" class="mr-1" />
       About FCF Verses
     </a>
     <a class="btn btn-lg btn-primary" href="https://FCFellowship.org" role="button">
+      <font-awesome-icon :icon="['fas', 'cross']" class="mr-1" />
       FCF Home Page
     </a>
   </div>

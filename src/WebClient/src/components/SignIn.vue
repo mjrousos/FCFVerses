@@ -6,6 +6,7 @@
         type="submit"
         v-on:click.prevent="login"
       >
+        <font-awesome-icon :icon="['fas', 'user']" class="mr-1" />
         Sign in
       </button>
     </div>

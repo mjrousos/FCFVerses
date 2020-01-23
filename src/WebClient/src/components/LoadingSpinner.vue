@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2 class="loaderTitle">{{ title }}</h2>
     <div class="loader" />
     <div class="loaderBackground">
       <img src="../assets/FCF_Logo_Icon.png" />
@@ -8,10 +9,23 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "loaderSpinner",
+  props: ["title"]
+};
 </script>
 
 <style>
+.loaderTitle {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -120px;
+  margin-left: -200px;
+  width: 400px;
+}
+
 .loader {
   position: absolute;
   left: 50%;

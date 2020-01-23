@@ -1,5 +1,5 @@
 <template>
-  <div class="container my-2">
+  <div>
     <div v-if="signedIn">
       <VerseList />
     </div>

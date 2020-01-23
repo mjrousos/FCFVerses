@@ -1,7 +1,10 @@
 <template>
   <div v-if="appInitialized">
     <NavBar />
-    <router-view />
+    <!-- mb-5 to leave room for the fixed footer -->
+    <div class="container mt-2 mb-5">
+      <router-view />
+    </div>
     <Footer />
   </div>
   <LoadingSpinner v-else></LoadingSpinner>

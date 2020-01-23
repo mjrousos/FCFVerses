@@ -2,7 +2,12 @@
   <!-- https://getbootstrap.com/docs/4.4/components/navbar/ -->
   <header class="nav navbar-expand-sm navbar-dark bg-dark p-2">
     <a class="navbar-brand" v-on:click="route('')" href="/">
-      <img class="logo-icon" alt="FCF Logo" src="./../assets/FCF_Logo_Icon.png" />FCF Verses
+      <img
+        class="logo-icon"
+        alt="FCF Logo"
+        src="./../assets/FCF_Logo_Icon.png"
+      />
+      FCF Verses
     </a>
     <button
       class="navbar-toggler ml-auto"

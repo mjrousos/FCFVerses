@@ -14,7 +14,11 @@
       <font-awesome-icon :icon="['far', 'question-circle']" class="mr-1" />
       About FCF Verses
     </a>
-    <a class="btn btn-lg btn-primary" href="https://FCFellowship.org" role="button">
+    <a
+      class="btn btn-lg btn-primary"
+      href="https://FCFellowship.org"
+      role="button"
+    >
       <font-awesome-icon :icon="['fas', 'cross']" class="mr-1" />
       FCF Home Page
     </a>

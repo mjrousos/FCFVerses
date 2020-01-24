@@ -10,10 +10,15 @@
         Sign in
       </button>
     </div>
-    <div v-if="signedIn">
-      <span class="navbar-text navbar-dark">Welcome, {{ userName }}</span>
+    <div class="navbar-collapse navbar-nav" v-if="signedIn">
+      <span class="navbar-item mr-1">
+        <span class="navbar-text m-0">Welcome, {{ userName }}</span>
+        <router-link class="nav-item nav-link" to="/settings">
+          <font-awesome-icon class="fa-lg" :icon="['fas', 'cog']" />
+        </router-link>
+      </span>
       <button
-        class="btn btn-outline-light"
+        class="btn btn-outline-light m-0"
         type="submit"
         v-on:click.prevent="logout"
       >
@@ -58,3 +63,9 @@ export default {
   }
 };
 </script>
+
+<style>
+span {
+  display: flex;
+}
+</style>

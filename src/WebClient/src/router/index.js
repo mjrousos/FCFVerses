@@ -46,6 +46,13 @@ const routes = [
     name: "groups",
     component: () =>
       import(/* webpackChunkName: "groups" */ "../views/Groups.vue")
+  },
+  {
+    path: "/settings",
+    beforeEnter: guardAuthorizedPath,
+    name: "settings",
+    component: () =>
+      import(/* webpackChunkName: "quiz" */ "../views/Settings.vue")
   }
 ];
 

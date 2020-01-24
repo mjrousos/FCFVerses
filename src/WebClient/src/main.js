@@ -6,11 +6,16 @@ import store from "./store";
 import "bootstrap";
 import "./styles/style.scss";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBible, faCross, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCog,
+  faBible,
+  faCross,
+  faUser
+} from "@fortawesome/free-solid-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faBible, faCross, faQuestionCircle, faUser);
+library.add(faBible, faCog, faCross, faQuestionCircle, faUser);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

@@ -1,8 +1,23 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import AuthService from "../services/auth.service";
+import store from "../store";
 
 Vue.use(VueRouter);
+
+async function guardAuthorizedPath(_to, _from, next) {
+  // Bizarrely, guard routes can run before the router-view is mounted,
+  // (and, therefore, before app initialization is finished), so
+  // double-check that the user and access token are populated
+  // before making guard decisions based on them.
+  await store.dispatch("refreshUser");
+  if (store.getters.user != null) {
+    next();
+  } else {
+    AuthService.loginAsync();
+  }
+}
 
 const routes = [
   {
@@ -21,11 +36,13 @@ const routes = [
   },
   {
     path: "/quiz",
+    beforeEnter: guardAuthorizedPath,
     name: "quiz",
     component: () => import(/* webpackChunkName: "quiz" */ "../views/Quiz.vue")
   },
   {
     path: "/groups",
+    beforeEnter: guardAuthorizedPath,
     name: "groups",
     component: () =>
       import(/* webpackChunkName: "groups" */ "../views/Groups.vue")

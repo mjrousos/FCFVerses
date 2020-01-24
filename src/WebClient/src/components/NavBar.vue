@@ -26,10 +26,22 @@
           <router-link class="nav-link" to="/">Verses</router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/quiz">Quiz</router-link>
+          <router-link
+            :class="{ disabled: !signedIn }"
+            class="nav-link"
+            to="/quiz"
+          >
+            Quiz
+          </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/groups">Groups</router-link>
+          <router-link
+            :class="{ disabled: !signedIn }"
+            class="nav-link"
+            to="/groups"
+          >
+            Groups
+          </router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" to="/about">About</router-link>
@@ -49,6 +61,11 @@ export default {
   name: "navBar",
   components: {
     SignIn
+  },
+  computed: {
+    signedIn() {
+      return this.$store.getters.user != null;
+    }
   }
 };
 </script>
@@ -57,5 +74,10 @@ export default {
 .logo-icon {
   max-width: 50px;
   margin-right: 0.5rem;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.8;
 }
 </style>

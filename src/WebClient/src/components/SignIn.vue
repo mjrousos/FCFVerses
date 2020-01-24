@@ -34,7 +34,6 @@ import AuthService from "../services/auth.service";
 
 async function login() {
   await AuthService.loginAsync(Configuration.authSettings.popup);
-  this.refreshUserInfo();
 }
 
 function logout() {

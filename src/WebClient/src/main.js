@@ -7,15 +7,17 @@ import "bootstrap";
 import "./styles/style.scss";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
-  faCog,
   faBible,
+  faCog,
   faCross,
+  faEnvelope,
   faUser
 } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faBible, faCog, faCross, faQuestionCircle, faUser);
+library.add(faBible, faCog, faCross, faEnvelope, faGithub, faQuestionCircle, faUser);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

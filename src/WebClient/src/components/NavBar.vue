@@ -71,6 +71,10 @@ export default {
 </script>
 
 <style>
+.navbar-text {
+  margin-right: 1rem;
+}
+
 .logo-icon {
   max-width: 50px;
   margin-right: 0.5rem;

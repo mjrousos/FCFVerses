@@ -11,13 +11,23 @@ import {
   faCog,
   faCross,
   faEnvelope,
+  faPlus,
   faUser
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faBible, faCog, faCross, faEnvelope, faGithub, faQuestionCircle, faUser);
+library.add(
+  faBible,
+  faCog,
+  faCross,
+  faEnvelope,
+  faGithub,
+  faQuestionCircle,
+  faPlus,
+  faUser
+);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

@@ -14,6 +14,7 @@ export default class WebApiService {
     return [
       {
         groupName: "Personal",
+        admin: true,
         passages: [
           {
             reference: "John 3:16",
@@ -43,6 +44,7 @@ export default class WebApiService {
       },
       {
         groupName: "Timothy Team (Sunday)",
+        admin: false,
         passages: [
           {
             reference: "Luke 9:23",
@@ -51,6 +53,11 @@ export default class WebApiService {
               'Then he said to them all: "Whoever wants to be my disciple must deny themselves and take up their cross daily and follow me.'
           }
         ]
+      },
+      {
+        groupName: "Liberty Through the Rock",
+        admin: true,
+        passages: []
       }
     ];
   }

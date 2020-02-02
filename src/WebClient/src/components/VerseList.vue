@@ -22,10 +22,6 @@ import LoadingSpinner from "./LoadingSpinner";
 
 var apiClient = new WebApiService();
 
-const data = {
-  passagesGroups: []
-};
-
 async function loadVerses() {
   this.passagesGroups = await apiClient.getAllPassages();
 }
@@ -39,7 +35,11 @@ export default {
   created() {
     this.loadVerses();
   },
-  data: () => data,
+  data: function() {
+    return {
+      passagesGroups: []
+    };
+  },
   methods: {
     loadVerses
   }

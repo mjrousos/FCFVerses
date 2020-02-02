@@ -13,13 +13,13 @@
 import VerseList from "@/components/VerseList.vue";
 import Welcome from "@/components/Welcome.vue";
 
-const data = {
-  title: "FCF Verses"
-};
-
 export default {
   name: "home",
-  data: () => data,
+  data: function() {
+    return {
+      title: "FCF Verses"
+    };
+  },
   components: {
     VerseList,
     Welcome

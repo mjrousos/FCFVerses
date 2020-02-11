@@ -2,10 +2,10 @@
   <div class="card">
     <div class="card-header container-fluid">
       <div class="row">
-        <div class="col-10">
+        <div class="col-8">
           <h5 class="card-title">{{ passages.groupName }} verses</h5>
         </div>
-        <div v-if="passages.admin" class="col-2">
+        <div v-if="passages.admin" class="col-4">
           <button
             class="btn btn-sm btn-outline-primary float-right"
             v-on:click="addVerses = !addVerses"

@@ -23,9 +23,13 @@
       <li
         class="list-group-item"
         v-for="passage in passages.passages"
-        :key="passage.reference"
+        :key="passage.passageId"
       >
-        <Verse :passage="passage" />
+        <Verse
+          :passage="passage"
+          :removable="passages.admin"
+          v-on:remove-verse="removeVerse"
+        />
       </li>
     </ul>
     <div class="card-body" v-else>
@@ -49,6 +53,11 @@ async function addVerses(passage) {
   this.$store.dispatch("refreshGroupPassages", this.passages.groupId);
 }
 
+async function removeVerse(passageId) {
+  await apiClient.removePassage(passageId, this.passages.groupId);
+  this.$store.dispatch("refreshGroupPassages", this.passages.groupId);
+}
+
 export default {
   name: "verseGroup",
   components: {
@@ -61,7 +70,8 @@ export default {
     };
   },
   methods: {
-    addVerses
+    addVerses,
+    removeVerse
   },
   props: {
     passages: Object

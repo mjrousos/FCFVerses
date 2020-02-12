@@ -8,7 +8,11 @@ export default class WebApiService {
     console.log(`Adding ${JSON.stringify(passage)} to group ${group} for ${AuthService.getUserId(AuthService.getUser())}`);
   }
 
-  async getAllPassages(groupId) {
+  async removePassage(passageId, groupId) {
+    console.log(`Removing passage ${passageId} from group ${groupId} for ${AuthService.getUserId(AuthService.getUser())}`);
+  }
+
+  async getPassages(groupId) {
     if (groupId) {
       return {
         groupName: "Personal",
@@ -16,24 +20,28 @@ export default class WebApiService {
         admin: true,
         passages: [
           {
+            passageId: 4,
             reference: "Acts 15:11",
             translation: "NIV",
             text:
               "No! We believe it is through the grace of our Lord Jesus that we are saved, just as they are."
           },
           {
+            passageId: 1,
             reference: "John 3:16",
             translation: "NIV",
             text:
               "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."
           },
           {
+            passageId: 2,
             reference: "Matthew 6:10",
             translation: "NIV",
             text:
               "your kingdom come, your will be done, on earth as it is in heaven."
           },
           {
+            passageId: 3,
             reference: "Ephesians 1:15-19a",
             translation: "NIV",
             text:
@@ -52,18 +60,21 @@ export default class WebApiService {
         admin: true,
         passages: [
           {
+            passageId: 1,
             reference: "John 3:16",
             translation: "NIV",
             text:
               "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."
           },
           {
+            passageId: 2,
             reference: "Matthew 6:10",
             translation: "NIV",
             text:
               "your kingdom come, your will be done, on earth as it is in heaven."
           },
           {
+            passageId: 3,
             reference: "Ephesians 1:15-19a",
             translation: "NIV",
             text:
@@ -77,6 +88,7 @@ export default class WebApiService {
         admin: false,
         passages: [
           {
+            passageId: 4,
             reference: "Luke 9:23",
             translation: "NIV",
             text:
@@ -91,6 +103,15 @@ export default class WebApiService {
         passages: []
       }
     ];
+  }
+
+  async getUserSettings() {
+    // TODO
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  async updateUserSettings(settings) {
+    // TODO
   }
 
   async anonymousApi() {

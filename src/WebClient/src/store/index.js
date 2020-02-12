@@ -53,12 +53,12 @@ export default new Vuex.Store({
       commit("setAppInitialized", true);
     },
     refreshAllPassages: async ({ commit }) => {
-      var updatedPassages = await apiClient.getAllPassages();
+      var updatedPassages = await apiClient.getPassages();
       commit("updateAllPassages", updatedPassages);
     },
     refreshGroupPassages: async ({ commit }, groupId) => {
       if (groupId) {
-        var updatedPassages = await apiClient.getAllPassages(groupId);
+        var updatedPassages = await apiClient.getPassages(groupId);
         commit("updatePassagesGroup", updatedPassages);
       }
     },

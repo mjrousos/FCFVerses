@@ -12,6 +12,7 @@ import {
   faCross,
   faEnvelope,
   faPlus,
+  faTimes,
   faUser
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
@@ -26,6 +27,7 @@ library.add(
   faGithub,
   faQuestionCircle,
   faPlus,
+  faTimes,
   faUser
 );
 

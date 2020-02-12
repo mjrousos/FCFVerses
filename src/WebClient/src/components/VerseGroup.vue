@@ -8,15 +8,15 @@
         <div v-if="passages.admin" class="col-4">
           <button
             class="btn btn-sm btn-outline-primary float-right"
-            v-on:click="addVerses = !addVerses"
+            v-on:click="showAddVerses = !showAddVerses"
           >
             <font-awesome-icon :icon="['fas', 'plus']" class="mr-1" />
             Add Verses
           </button>
         </div>
       </div>
-      <div class="row" v-if="addVerses">
-        <AddVerses />
+      <div class="row" v-if="showAddVerses">
+        <AddVerses v-on:add-verses="addVerses" />
       </div>
     </div>
     <ul class="list-group list-group-flush" v-if="passages.passages.length > 0">
@@ -39,6 +39,15 @@
 <script>
 import Verse from "./Verse";
 import AddVerses from "./AddVerses";
+import WebApiService from "../services/webApi.service";
+
+var apiClient = new WebApiService();
+
+async function addVerses(passage) {
+  this.showAddVerses = false;
+  await apiClient.addPassage(passage, this.passages.groupId);
+  this.$store.dispatch("refreshGroupPassages", this.passages.groupId);
+}
 
 export default {
   name: "verseGroup",
@@ -48,8 +57,11 @@ export default {
   },
   data: function() {
     return {
-      addVerses: false
+      showAddVerses: false
     };
+  },
+  methods: {
+    addVerses
   },
   props: {
     passages: Object

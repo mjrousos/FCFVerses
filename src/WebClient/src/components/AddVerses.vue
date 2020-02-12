@@ -14,7 +14,7 @@
               <select
                 id="bookSelect"
                 class="form-control"
-                v-model="selectedBook"
+                v-model="passage.book"
               >
                 <option selected hidden disabled value="">Book</option>
                 <option
@@ -30,7 +30,7 @@
               <select
                 id="chapterSelect"
                 class="form-control"
-                v-model="selectedChapter"
+                v-model="passage.chapter"
               >
                 <option selected hidden disabled value="0">Chapter</option>
                 <option
@@ -46,7 +46,7 @@
               <select
                 id="verseSelect"
                 class="form-control"
-                v-model="selectedVerse"
+                v-model="passage.verse"
               >
                 <option selected hidden disabled value="0">Verse</option>
                 <option
@@ -63,7 +63,11 @@
           <!-- Verse count -->
           <div class="form-group col-md-2 col-xs-4">
             <label for="verseCount"># of verses</label>
-            <input id="verseCount" class="form-control" v-model="verseCount" />
+            <input
+              id="verseCount"
+              class="form-control"
+              v-model="passage.verseCount"
+            />
           </div>
         </div>
 
@@ -75,14 +79,18 @@
             <input
               id="startOffset"
               class="form-control"
-              v-model="beginningOffset"
+              v-model="passage.beginningOffset"
             />
           </div>
           <div class="form-group col-md-5 col-xs-12">
             <label for="endOffset">
               Words to skip at passage end
             </label>
-            <input id="endOffset" class="form-control" v-model="endingOffset" />
+            <input
+              id="endOffset"
+              class="form-control"
+              v-model="passage.endingOffset"
+            />
           </div>
         </div>
 
@@ -94,7 +102,18 @@
         </div>
 
         <div class="form-row">
-          <button class="btn btn-primary" v-on:click.prevent="addVerses">
+          <button
+            :disabled="
+              !(
+                passage.book &&
+                passage.chapter &&
+                passage.verse &&
+                passage.verseCount > 0
+              )
+            "
+            class="btn btn-primary"
+            v-on:click.prevent="addVerses"
+          >
             Add
           </button>
         </div>
@@ -107,29 +126,39 @@
 <script>
 import VerseCounts from "../VerseCounts";
 
-async function addVerses() {
-  // TODO
+function resetPassage() {
+  this.passage.book = "";
+  this.passage.chapter = 0;
+  this.passage.verse = 0;
+  this.passage.verseCount = 1;
+  this.passage.beginningOffset = 0;
+  this.passage.endingOffset = 0;
+}
+
+function addVerses() {
+  this.$emit("add-verses", { passage: this.passage });
+  this.resetPassage();
 }
 
 export default {
   name: "addVerses",
   computed: {
     chapterNumbers() {
-      if (!this.selectedBook) {
+      if (!this.passage.book) {
         return [];
       } else {
-        return Array.from(this.verses[this.selectedBook].keys()).map(
+        return Array.from(this.verses[this.passage.book].keys()).map(
           (_, i) => i + 1
         );
       }
     },
     verseNumbers() {
-      if (!this.selectedChapter) {
+      if (!this.passage.chapter) {
         return [];
       } else {
         return Array.from(
           new Array(
-            this.verses[this.selectedBook][this.selectedChapter - 1]
+            this.verses[this.passage.book][this.passage.chapter - 1]
           ).keys()
         ).map((_, i) => i + 1);
       }
@@ -138,16 +167,19 @@ export default {
   data: function() {
     return {
       verses: VerseCounts,
-      selectedBook: "",
-      selectedChapter: 0,
-      selectedVerse: 0,
-      verseCount: 1,
-      beginningOffset: 0,
-      endingOffset: 0
+      passage: {
+        book: "",
+        chapter: 0,
+        verse: 0,
+        verseCount: 1,
+        beginningOffset: 0,
+        endingOffset: 0
+      }
     };
   },
   methods: {
-    addVerses
+    addVerses,
+    resetPassage
   }
 };
 </script>

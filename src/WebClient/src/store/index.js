@@ -1,20 +1,29 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import AuthService from "../services/auth.service";
+import WebApiService from "../services/webApi.service";
 
 Vue.use(Vuex);
+var apiClient = new WebApiService();
 
 export default new Vuex.Store({
   state: {
     appInitialized: false,
+    passages: [],
     user: null
   },
   getters: {
     appInitialized: state => {
       return state.appInitialized;
     },
+    passages: state => {
+      return state.passages;
+    },
     user: state => {
       return state.user;
+    },
+    userId: state => {
+      return AuthService.getUserId(state.user);
     },
     userName: state => {
       return AuthService.getUserName(state.user);
@@ -26,11 +35,32 @@ export default new Vuex.Store({
     },
     setUser: (state, newUser) => {
       state.user = newUser;
+    },
+    updateAllPassages(state, newPassages) {
+      state.passages = newPassages;
+    },
+    updatePassagesGroup: (state, newPassagesGroup) => {
+      var index = state.passages.findIndex(
+        g => g.groupId == newPassagesGroup.groupId
+      );
+      if (index >= 0) {
+        Object.assign(state.passages[index], newPassagesGroup);
+      }
     }
   },
   actions: {
     markAppInitialized: ({ commit }) => {
       commit("setAppInitialized", true);
+    },
+    refreshAllPassages: async ({ commit }) => {
+      var updatedPassages = await apiClient.getAllPassages();
+      commit("updateAllPassages", updatedPassages);
+    },
+    refreshGroupPassages: async ({ commit }, groupId) => {
+      if (groupId) {
+        var updatedPassages = await apiClient.getAllPassages(groupId);
+        commit("updatePassagesGroup", updatedPassages);
+      }
     },
     refreshUser: async ({ commit }) => {
       var user = AuthService.getUser();

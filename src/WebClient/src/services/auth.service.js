@@ -39,6 +39,19 @@ class AuthService {
     return this.msalApp.getAccount();
   }
 
+  // Get the user's ID
+  getUserId(user) {
+    if (user) {
+      if (user.accountIdentifier) {
+        return user.accountIdentifier;
+      } else if (user.idToken && user.idToken.sub) {
+        return user.idToken.sub;
+      }
+    } else {
+      return null;
+    }
+  }
+
   // Find friendly display name for a user
   getUserName(user) {
     if (user) {

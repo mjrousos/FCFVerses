@@ -4,16 +4,51 @@ import AuthService from "./auth.service";
 export default class WebApiService {
   constructor() {}
 
-  // eslint-disable-next-line no-unused-vars
-  async lookupPassage(chapter, firstVerse, verseCount, translation, startTrim, endTrim) {
-    // TODO - Call backend to look up verse in cache or API
+  async addPassage(passage, group) {
+    console.log(`Adding ${JSON.stringify(passage)} to group ${group} for ${AuthService.getUserId(AuthService.getUser())}`);
   }
-  async getAllPassages() {
+
+  async getAllPassages(groupId) {
+    if (groupId) {
+      return {
+        groupName: "Personal",
+        groupId: groupId,
+        admin: true,
+        passages: [
+          {
+            reference: "Acts 15:11",
+            translation: "NIV",
+            text:
+              "No! We believe it is through the grace of our Lord Jesus that we are saved, just as they are."
+          },
+          {
+            reference: "John 3:16",
+            translation: "NIV",
+            text:
+              "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."
+          },
+          {
+            reference: "Matthew 6:10",
+            translation: "NIV",
+            text:
+              "your kingdom come, your will be done, on earth as it is in heaven."
+          },
+          {
+            reference: "Ephesians 1:15-19a",
+            translation: "NIV",
+            text:
+              "For this reason, ever since I heard about your faith in the Lord Jesus and your love for all God’s people, I have not stopped giving thanks for you, remembering you in my prayers. I keep asking that the God of our Lord Jesus Christ, the glorious Father, may give you the Spirit[fn] of wisdom and revelation, so that you may know him better. I pray that the eyes of your heart may be enlightened in order that you may know the hope to which he has called you, the riches of his glorious inheritance in his holy people, and his incomparably great power for us who believe."
+          }
+        ]
+      };
+    }
+
     // TODO - Call HTTP client service to retrieve verses from
     //        backend.
     return [
       {
         groupName: "Personal",
+        groupId: -1,
         admin: true,
         passages: [
           {
@@ -33,17 +68,12 @@ export default class WebApiService {
             translation: "NIV",
             text:
               "For this reason, ever since I heard about your faith in the Lord Jesus and your love for all God’s people, I have not stopped giving thanks for you, remembering you in my prayers. I keep asking that the God of our Lord Jesus Christ, the glorious Father, may give you the Spirit[fn] of wisdom and revelation, so that you may know him better. I pray that the eyes of your heart may be enlightened in order that you may know the hope to which he has called you, the riches of his glorious inheritance in his holy people, and his incomparably great power for us who believe."
-          },
-          {
-            reference: "Acts 15:11",
-            translation: "NIV",
-            text:
-              "No! We believe it is through the grace of our Lord Jesus that we are saved, just as they are."
           }
         ]
       },
       {
         groupName: "Timothy Team (Sunday)",
+        groupId: 1,
         admin: false,
         passages: [
           {
@@ -56,6 +86,7 @@ export default class WebApiService {
       },
       {
         groupName: "Liberty Through the Rock",
+        groupId: 2,
         admin: true,
         passages: []
       }

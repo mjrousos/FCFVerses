@@ -4,7 +4,7 @@
       <div
         class="row my-3"
         v-for="group in passagesGroups"
-        :key="group.groupName"
+        :key="group.groupId"
       >
         <VerseGroup :passages="group" />
       </div>
@@ -16,14 +16,11 @@
 </template>
 
 <script>
-import WebApiService from "../services/webApi.service";
 import VerseGroup from "./VerseGroup";
 import LoadingSpinner from "./LoadingSpinner";
 
-var apiClient = new WebApiService();
-
 async function loadVerses() {
-  this.passagesGroups = await apiClient.getAllPassages();
+  this.$store.dispatch("refreshAllPassages");
 }
 
 export default {
@@ -32,13 +29,13 @@ export default {
     LoadingSpinner,
     VerseGroup
   },
+  computed: {
+    passagesGroups() {
+      return this.$store.getters.passages;
+    }
+  },
   created() {
     this.loadVerses();
-  },
-  data: function() {
-    return {
-      passagesGroups: []
-    };
   },
   methods: {
     loadVerses

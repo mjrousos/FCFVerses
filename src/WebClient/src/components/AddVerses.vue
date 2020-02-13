@@ -66,7 +66,7 @@
             <input
               id="verseCount"
               class="form-control"
-              v-model="passage.verseCount"
+              v-model="passage.length"
             />
           </div>
         </div>
@@ -79,7 +79,7 @@
             <input
               id="startOffset"
               class="form-control"
-              v-model="passage.beginningOffset"
+              v-model="passage.startOffset"
             />
           </div>
           <div class="form-group col-md-5 col-xs-12">
@@ -89,7 +89,7 @@
             <input
               id="endOffset"
               class="form-control"
-              v-model="passage.endingOffset"
+              v-model="passage.endOffset"
             />
           </div>
         </div>
@@ -108,7 +108,7 @@
                 passage.book &&
                 passage.chapter &&
                 passage.verse &&
-                passage.verseCount > 0
+                passage.length > 0
               )
             "
             class="btn btn-primary"
@@ -130,9 +130,9 @@ function resetPassage() {
   this.passage.book = "";
   this.passage.chapter = 0;
   this.passage.verse = 0;
-  this.passage.verseCount = 1;
-  this.passage.beginningOffset = 0;
-  this.passage.endingOffset = 0;
+  this.passage.length = 1;
+  this.passage.startOffset = 0;
+  this.passage.endOffset = 0;
 }
 
 function addVerses() {
@@ -171,9 +171,9 @@ export default {
         book: "",
         chapter: 0,
         verse: 0,
-        verseCount: 1,
-        beginningOffset: 0,
-        endingOffset: 0
+        length: 1,
+        startOffset: 0,
+        endOffset: 0
       }
     };
   },

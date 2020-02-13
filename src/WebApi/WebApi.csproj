@@ -8,9 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Resources\VerseCounts.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureADB2C.UI" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\VerseCounts.json" />
   </ItemGroup>
 
   <Target Name="CopyClientDist" BeforeTargets="Build">

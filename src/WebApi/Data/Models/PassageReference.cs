@@ -10,15 +10,15 @@ namespace WebApi.Data.Models
     {
         public Books Book { get; set; }
 
-        public byte Chapter { get; }
+        public byte Chapter { get; set; }
 
-        public byte Verse { get; }
+        public byte Verse { get; set; }
 
-        public byte Length { get; }
+        public byte Length { get; set; }
 
-        public byte StartOffset { get; }
+        public byte StartOffset { get; set; }
 
-        public byte EndOffset { get; }
+        public byte EndOffset { get; set; }
 
         public PassageReference(Books book, byte chapter, byte verse, byte length, byte startOffset, byte endOffset)
         {

@@ -4,7 +4,7 @@ namespace WebApi.Models
 {
     public class VerseReference
     {
-        public Books Book { get; set; }
+        public Books Book { get; }
 
         public byte Chapter { get; }
 

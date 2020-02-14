@@ -1,18 +1,22 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
+using WebApi.Data;
 
 namespace WebApi
 {
     public class Startup
     {
+        private const string DbConnectionStringName = "VersesDbConnectionString";
         private const string EnableCompressionKeyName = "EnableResponseCompression";
         private const string HealthCheckPath = "/hc";
         private const string SwaggerAPITitle = "My API";
@@ -28,6 +32,13 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add EF Core services
+            services.AddDbContext<VersesDbContext>(options =>
+                options.UseSqlServer(Configuration[DbConnectionStringName], options =>
+                {
+                    options.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                }));
+
             // Add MVC services
             services.AddControllers();
 

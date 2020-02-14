@@ -2,7 +2,7 @@
 
 namespace WebApi.Data.Models
 {
-    public class Group
+    public class Group : IEntity
     {
         public string Name { get; set; }
 

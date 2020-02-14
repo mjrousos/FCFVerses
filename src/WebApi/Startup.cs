@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
+using Polly;
 using WebApi.Data;
 using WebApi.Models;
 using WebApi.Services;
@@ -18,6 +21,8 @@ namespace WebApi
 {
     public class Startup
     {
+        private const string BibleApiKeyKeyName = "BibleApi:Key";
+        private const string BibleApiUrlKeyName = "BibleApi:Url";
         private const string DbConnectionStringName = "VersesDbConnectionString";
         private const string EnableCompressionKeyName = "EnableResponseCompression";
         private const string HealthCheckPath = "/hc";
@@ -49,6 +54,8 @@ namespace WebApi
                 {
                     Translations.KJV => serviceProvider.GetRequiredService<BibleApiVerseLookupService>(),
                     Translations.ESV => serviceProvider.GetRequiredService<BibleApiVerseLookupService>(),
+                    Translations.ASV => serviceProvider.GetRequiredService<BibleApiVerseLookupService>(),
+                    Translations.RSV => serviceProvider.GetRequiredService<BibleApiVerseLookupService>(),
                     _ => serviceProvider.GetRequiredService<IVerseLookupService>()
                 };
             });
@@ -56,9 +63,11 @@ namespace WebApi
             services.AddScoped<BibleApiVerseLookupService>();
             services.AddHttpClient(BibleApiVerseLookupService.BibleApiHttpClientName, client =>
             {
-                client.BaseAddress = new Uri("http://TODO");
-                client.DefaultRequestHeaders.Add("api-key", "f3466e5cc093803d5bfc9348aa651b63");
-            });
+                client.BaseAddress = new Uri(Configuration[BibleApiUrlKeyName]);
+                client.DefaultRequestHeaders.Add("api-key", Configuration[BibleApiKeyKeyName]);
+            })
+                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(i * 2)))
+                .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
             // Add MVC services
             services.AddControllers();

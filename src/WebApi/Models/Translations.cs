@@ -3,6 +3,11 @@
     public enum Translations
     {
         /// <summary>
+        /// American Standard Version 
+        /// </summary>
+        ASV,
+
+        /// <summary>
         /// King James Version
         /// </summary>
         KJV,
@@ -20,6 +25,11 @@
         /// <summary>
         /// New Living Translation
         /// </summary>
-        NLT
+        NLT,
+
+        /// <summary>
+        /// Revised Standard Version
+        /// </summary>
+        RSV
     }
 }

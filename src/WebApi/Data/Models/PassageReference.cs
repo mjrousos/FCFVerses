@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using WebApi.Models;
@@ -6,7 +8,7 @@ using WebApi.Utilities;
 
 namespace WebApi.Data.Models
 {
-    public class PassageReference : IEntity
+    public class PassageReference : IEntity, IEquatable<PassageReference>
     {
         public Books Book { get; set; }
 
@@ -114,5 +116,22 @@ namespace WebApi.Data.Models
 
             return ret.ToString();
         }
+
+        public bool Equals([AllowNull] PassageReference other) =>
+            !(other is null) &&
+            Book == other.Book &&
+            Chapter == other.Chapter &&
+            Verse == other.Verse &&
+            Length == other.Length &&
+            StartOffset == other.StartOffset &&
+            EndOffset == other.EndOffset;
+
+        public override bool Equals(object? obj) => (obj is PassageReference reference) ? Equals(reference) : false;
+
+        public override int GetHashCode() => $"{ToString()} {StartOffset} {EndOffset}".GetHashCode();
+
+        public static bool operator ==(PassageReference? lhs, PassageReference? rhs) => lhs?.Equals(rhs) ?? rhs is null;
+
+        public static bool operator !=(PassageReference? lhs, PassageReference? rhs) => !(lhs == rhs);
     }
 }

@@ -14,7 +14,7 @@ namespace WebApi.Data
 
         public DbSet<PassageReference> PassageReferences { get; set; } = default!;
 
-        public DbSet<PassageReference> UserSettings { get; set; } = default!;
+        public DbSet<UserSettings> UserSettings { get; set; } = default!;
 
         public DbSet<Verse> Verses { get; set; } = default!;
 

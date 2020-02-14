@@ -24,14 +24,16 @@ namespace WebApi.Services
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public Task<IEnumerable<Verse>> GetVersesAsync(IEnumerable<VerseReference> references, Translations translation)
+        public async Task<IEnumerable<Verse>> GetVersesAsync(IEnumerable<VerseReference> references, Translations translation)
         {
-            // TODO : Check SQL cache
+            /* TODO : Check SQL cache */
 
             var lookupService = LookupResolver(translation);
-            // TODO : Get verses from service and cache them
+            var verses = await lookupService.LookupVersesAsync(references, translation);
 
-            throw new NotImplementedException();
+            /* TODO : Get verses from service and cache them */
+
+            return verses;
         }
     }
 }

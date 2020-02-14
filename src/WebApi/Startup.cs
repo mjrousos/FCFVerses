@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using WebApi.Data;
+using WebApi.Models;
+using WebApi.Services;
 
 namespace WebApi
 {
@@ -38,6 +40,25 @@ namespace WebApi
                 {
                     options.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                 }));
+
+            // Add verse lookup services
+            services.AddScoped<IVerseService, VerseService>();
+            services.AddTransient<LookupServiceResolver>(serviceProvider => translation =>
+            {
+                return translation switch
+                {
+                    Translations.KJV => serviceProvider.GetRequiredService<BibleApiVerseLookupService>(),
+                    Translations.ESV => serviceProvider.GetRequiredService<BibleApiVerseLookupService>(),
+                    _ => serviceProvider.GetRequiredService<IVerseLookupService>()
+                };
+            });
+
+            services.AddScoped<BibleApiVerseLookupService>();
+            services.AddHttpClient(BibleApiVerseLookupService.BibleApiHttpClientName, client =>
+            {
+                client.BaseAddress = new Uri("http://TODO");
+                client.DefaultRequestHeaders.Add("api-key", "f3466e5cc093803d5bfc9348aa651b63");
+            });
 
             // Add MVC services
             services.AddControllers();

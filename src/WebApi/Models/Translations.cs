@@ -3,7 +3,7 @@
     public enum Translations
     {
         /// <summary>
-        /// American Standard Version 
+        /// American Standard Version
         /// </summary>
         ASV,
 

@@ -8,6 +8,5 @@ export default {
     redirectUri: "",
     postLogoutRedirectUri: "",
     popup: false
-  },
-  webApiUrl: "http://localhost:5000"
+  }
 };

@@ -70,7 +70,11 @@ namespace WebApi
                 .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
             // Add MVC services
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                });
 
             // Add auth services, including JWT bearer scheme
             services.AddAuthentication(AzureADB2CDefaults.BearerAuthenticationScheme)
@@ -124,7 +128,7 @@ namespace WebApi
                 app.UseCors(policy => policy
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .WithOrigins("http://localhost:8080", "http://localhost:5000", "https://localhost:5001")
+                    .WithOrigins("http://localhost:8080", "http://localhost:5000", "https://localhost:5001", "http://fcfverses.org", "https://fcfverses.org")
                     .AllowCredentials());
             }
 

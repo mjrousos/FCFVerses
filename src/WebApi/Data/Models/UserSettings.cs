@@ -5,6 +5,8 @@ namespace WebApi.Data.Models
 {
     public class UserSettings : IEntity
     {
+        public bool IsGlobalAdmin { get; set; }
+
         public Translations? PreferredTranslation { get; set; }
 
         public string UserId { get; set; }

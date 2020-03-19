@@ -26,7 +26,8 @@ namespace WebApi.Services
         {
             { Translations.KJV, "de4e12af7f28f599-02" },
             { Translations.ASV, "06125adad2d5898a-01" },
-            { Translations.RSV, "40072c4a5aba4022-01" }
+            { Translations.RSV, "40072c4a5aba4022-01" },
+            { Translations.ESV, "f421fe261da7624f-01" }
         };
 
         private const int VerseLookupChunkSize = 50;

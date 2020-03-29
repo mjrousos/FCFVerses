@@ -14,7 +14,7 @@ namespace WebApi.Services
     /// <summary>
     /// Services for interacting with users and user settings.
     /// </summary>
-    public class UserService
+    public class UserService : IUserService
     {
         private const string DefaultTranslationKey = "DefaultTranslation";
 
@@ -63,7 +63,7 @@ namespace WebApi.Services
         /// </summary>
         /// <param name="userId">The user to retrieve roles for.</param>
         /// <returns>Group roles assigned to the specified user.</returns>
-        public async Task<IEnumerable<GroupRole>> GetGroupRolesAsync(string userId)
+        public async Task<IEnumerable<GroupRole>> GetGroupRolesAsync(string userId, Roles minimumRole)
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
@@ -77,7 +77,7 @@ namespace WebApi.Services
 
             Logger.LogInformation("Retrieved {RoleCount} roles for user {UserId}", user.GroupRoles.Count, userId);
 
-            return user.GroupRoles;
+            return user.GroupRoles.Where(g => g.Role <= minimumRole);
         }
 
         /// <summary>
@@ -100,8 +100,17 @@ namespace WebApi.Services
             Logger.LogInformation("User {UserId} global admin status: {GlobalAdmin}", userId, globalAdmin);
 
             return globalAdmin;
-
         }
+
+        /// <summary>
+        /// Determines whether a specified user is in a specified group.
+        /// </summary>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="groupId">The group ID.</param>
+        /// <param name="minimumRole">The minimum role the user must have in the group.</param>
+        /// <returns>True if the member is in the group with at least the minimum role access; false otherwise.</returns>
+        public async Task<bool> UserIsInGroup(string userId, int groupId, Roles minimumRole) =>
+            (await GetGroupRolesAsync(userId, minimumRole)).Any(g => g.GroupId == groupId);
 
         private async Task<UserSettings> GetOrCreateUserAsync(string userId)
         {
@@ -122,7 +131,10 @@ namespace WebApi.Services
                 PreferredTranslation = Enum.Parse<Translations>(Configuration[DefaultTranslationKey])
             };
 
-            var personalGroup = new Group("Personal");
+            var personalGroup = new Group("Personal")
+            {
+                Public = false
+            };
             settings.GroupRoles.Add(new GroupRole { Group = personalGroup, UserSettings = settings, Role = Roles.Admin });
 
             await DbContext.UserSettings.AddAsync(settings);

@@ -47,6 +47,8 @@ namespace WebApi
                 }));
 
             // Add verse lookup services
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IVerseService, VerseService>();
             services.AddTransient<LookupServiceResolver>(serviceProvider => translation =>
             {

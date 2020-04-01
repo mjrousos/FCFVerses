@@ -24,7 +24,7 @@ namespace WebApi.Services
 
         private ILogger<UserService> Logger { get; }
 
-        /// <summary>
+                /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
         /// </summary>
         /// <param name="dbContext">A DbContext for interacting with the app database.</param>
@@ -85,7 +85,7 @@ namespace WebApi.Services
         /// </summary>
         /// <param name="userId">The user to check global admin status for.</param>
         /// <returns>Whether the specified user is a global admin. False if the user does not exist.</returns>
-        public async Task<bool> IsGlobalAdmin(string userId)
+        public async Task<bool> IsGlobalAdminAsync(string userId)
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
@@ -107,10 +107,9 @@ namespace WebApi.Services
         /// </summary>
         /// <param name="userId">The user ID.</param>
         /// <param name="groupId">The group ID.</param>
-        /// <param name="minimumRole">The minimum role the user must have in the group.</param>
-        /// <returns>True if the member is in the group with at least the minimum role access; false otherwise.</returns>
-        public async Task<bool> UserIsInGroup(string userId, int groupId, Roles minimumRole) =>
-            (await GetGroupRolesAsync(userId, minimumRole)).Any(g => g.GroupId == groupId);
+        /// <returns>The user's role in the group or null if the user is not in the group.</returns>
+        public async Task<Roles?> GetUserRoleAsync(string userId, int groupId) =>
+            (await GetGroupRolesAsync(userId, Roles.Member)).SingleOrDefault(r => r.GroupId == groupId)?.Role;
 
         private async Task<UserSettings> GetOrCreateUserAsync(string userId)
         {

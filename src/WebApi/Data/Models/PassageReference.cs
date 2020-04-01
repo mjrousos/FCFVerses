@@ -32,6 +32,10 @@ namespace WebApi.Data.Models
             EndOffset = endOffset;
         }
 
+        public PassageReference(PassageReference otherReference)
+            : this(otherReference.Book, otherReference.Chapter, otherReference.Verse, otherReference.Length, otherReference.StartOffset, otherReference.EndOffset)
+        { }
+
         public IEnumerable<VerseReference> Verses
         {
             get

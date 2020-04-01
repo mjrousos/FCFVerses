@@ -4,8 +4,8 @@ import AuthService from "./auth.service";
 export default class WebApiService {
   constructor() {}
 
-  async addPassage(passage, group) {
-    console.log(`Adding ${JSON.stringify(passage)} to group ${group} for ${AuthService.getUserId(AuthService.getUser())}`);
+  async addPassage(passage, groupId) {
+    console.log(`Adding ${JSON.stringify(passage)} to group ${groupId} for ${AuthService.getUserId(AuthService.getUser())}`);
   }
 
   async removePassage(passageId, groupId) {

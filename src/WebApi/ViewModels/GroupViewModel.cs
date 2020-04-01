@@ -2,8 +2,14 @@
 {
     public class GroupViewModel
     {
-        public int Id { get; set; }
+        public GroupViewModel(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
 
-        public string Name { get; set; }
+        public int Id { get; }
+
+        public string Name { get; }
     }
 }

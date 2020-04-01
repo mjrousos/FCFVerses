@@ -11,8 +11,8 @@ namespace WebApi.Services
 
         Task<Translations> GetPreferredTranslationAsync(string userId);
 
-        Task<bool> IsGlobalAdmin(string userId);
+        Task<bool> IsGlobalAdminAsync(string userId);
 
-        Task<bool> UserIsInGroup(string userId, int groupId, Roles minimumRole);
+        Task<Roles?> GetUserRoleAsync(string userId, int groupId);
     }
 }

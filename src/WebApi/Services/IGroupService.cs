@@ -10,7 +10,7 @@ namespace WebApi.Services
     {
         Task<bool> AddPassageAsync(int groupId, PassageReference passageReference);
 
-        Task<PassageGroup> GetPassagesAsync(int groupId, Translations translation, bool admin);
+        Task<PassageGroup?> GetPassagesAsync(int groupId, Translations translation, bool admin);
 
         Task<bool> RemovePassageAsync(int groupId, int passageId);
 

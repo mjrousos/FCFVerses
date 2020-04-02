@@ -91,35 +91,37 @@ namespace WebApi.Services
             return true;
         }
 
-        public async Task<PassageGroup> GetPassagesAsync(int groupId, Translations translation, bool admin)
+        public async Task<PassageGroup?> GetPassagesAsync(int groupId, Translations translation, bool admin)
         {
-            // TODO
-            throw new NotImplementedException();
+            Logger.LogInformation("Getting passages for group {GroupId}", groupId);
 
-            //Logger.LogInformation("Getting passages for group {GroupId}", groupId);
+            var group = await DbContext.Groups.FindAsync(groupId);
 
-            //var group = await DbContext.Groups.FindAsync(groupId);
+            if (group is null)
+            {
+                Logger.LogWarning("Could not retrieve passages for group {GroupId} because the group does not exist", groupId);
+                return null;
+            }
 
-            //if (group is null)
-            //{
-            //    Logger.LogWarning("Could not retrieve passages for group {GroupId} because the group does not exist", groupId);
-            //    return Enumerable.Empty<Passage>();
-            //}
+            var passageTasks = group.PassageReferences.Select(r => GetPassageAsync(r, translation));
+            var passages = await Task.WhenAll(passageTasks);
 
-            //// TODO : Optimize perf?
-            //var passages = new List<Passage>();
-            //foreach (var passage in group.PassageReferences)
-            //{
-            //    if (passage?.ToString() != null)
-            //    {
-            //        var passageText = string.Join(' ', (await VerseService.GetVersesAsync(passage.Verses, translation)).Select(v => v.Text));
+            Logger.LogInformation("Retrieved {PassageCount} passages for group {GroupId}", passages.Length, groupId);
+            return new PassageGroup(groupId, group.Name, admin, passages);
+        }
 
-            //        // The ! is required because Roslyn doesn't yet notice all null checking properly.
-            //        passages.Add(new Passage(passage.Id, passage.ToString() !, passageText, translation.ToString()));
-            //    }
-            //}
+        private async Task<Passage> GetPassageAsync(PassageReference reference, Translations translation)
+        {
+            var referenceString = reference?.ToString();
+            if (reference == null || string.IsNullOrEmpty(referenceString))
+            {
+                Logger.LogError("Could not resolve passage references. Invalid reference {@PassageReference}", reference);
+                throw new ArgumentException("Invalid passage reference", nameof(reference));
+            }
 
-            //return passages;
+            var passageVerses = await VerseService.GetVersesAsync(reference.Verses, translation);
+            Logger.LogInformation("Retrieved {VerseCount} verses for {PassageReference}", passageVerses.Count(), reference);
+            return new Passage(reference.Id, referenceString, string.Join(' ', passageVerses.Select(v => v.Text)), translation.ToString());
         }
 
         public async Task<IEnumerable<GroupViewModel>> GetAllPublicGroupsAsync() =>
@@ -129,6 +131,7 @@ namespace WebApi.Services
         {
             if (string.IsNullOrEmpty(userId))
             {
+                Logger.LogError("Could not get groups for user; invalid user ID {UserId}", userId);
                 throw new ArgumentException("User ID must not be null or empty", nameof(userId));
             }
 
@@ -137,6 +140,8 @@ namespace WebApi.Services
                 .Where(r => string.Equals(r.UserSettings.UserId, userId))
                 .Select(r => r.Group)
                 .ToListAsync();
+
+            Logger.LogInformation("Retrieved {GroupCount} groups for user {UserId}", groups.Count, userId);
 
             return groups.Select(g => new GroupViewModel(g.Id, g.Name));
         }

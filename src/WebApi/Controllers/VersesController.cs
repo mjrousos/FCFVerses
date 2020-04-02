@@ -46,7 +46,9 @@ namespace WebApi.Controllers
             var admin = await UserService.IsGlobalAdminAsync(currentUserId);
             var passageRetrievalTasks = groups.Select(g => GroupService.GetPassagesAsync(g.GroupId, translation, admin || g.Role == Roles.Admin));
             var passageGroups = await Task.WhenAll(passageRetrievalTasks);
-            return Ok(new PassageGroupList(translation.GetCopyrightNotice(), passageGroups));
+#pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types. Null items are removed, but Roslyn doesn't recognize that.
+            return Ok(new PassageGroupList(translation.GetCopyrightNotice(), passageGroups.Where(g => g != null)));
+#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
 
         [HttpGet("{groupId}")]

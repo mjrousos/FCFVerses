@@ -17,6 +17,15 @@ namespace WebApi.Models
             Verse = verse;
         }
 
-        public override string ToString() => $"{Book.GetDisplayName()} {Chapter}:{Verse}";
+        public override string ToString()
+        {
+            var bookName = Book.GetDisplayName()
+                .Replace("First", "1 ")
+                .Replace("Second", "2 ")
+                .Replace("Third", "3 ")
+                .Replace("SongOfSolomon", "Song of Solomon");
+
+            return $"{bookName} {Chapter}:{Verse}";
+        }
     }
 }

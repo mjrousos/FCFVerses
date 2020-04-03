@@ -22,6 +22,8 @@ namespace WebApi.Data.Models
 
         public byte EndOffset { get; set; }
 
+        public PassageReference() { }
+
         public PassageReference(Books book, byte chapter, byte verse, byte length, byte startOffset, byte endOffset)
         {
             Book = book;

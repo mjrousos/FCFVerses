@@ -85,6 +85,7 @@ namespace WebApi.Services
 
             group.PassageReferences.Remove(passage);
             DbContext.Groups.Update(group);
+            DbContext.PassageReferences.Remove(passage);
             await DbContext.SaveChangesAsync();
 
             Logger.LogInformation("Removed passage {PassageReferenceId} from group {GroupId}", passageId, groupId);
@@ -96,6 +97,7 @@ namespace WebApi.Services
             Logger.LogInformation("Getting passages for group {GroupId}", groupId);
 
             var group = await DbContext.Groups.FindAsync(groupId);
+            await DbContext.Entry(group).Collection(g => g.PassageReferences).LoadAsync();
 
             if (group is null)
             {

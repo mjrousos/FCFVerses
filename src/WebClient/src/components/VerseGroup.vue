@@ -5,7 +5,7 @@
         <div class="col-8">
           <h5 class="card-title">{{ passages.groupName }} verses</h5>
         </div>
-        <div v-if="passages.admin" class="col-4">
+        <div v-if="passages.isAdmin" class="col-4">
           <button
             class="btn btn-sm btn-outline-primary float-right"
             v-on:click="showAddVerses = !showAddVerses"
@@ -27,7 +27,7 @@
       >
         <Verse
           :passage="passage"
-          :removable="passages.admin"
+          :removable="passages.isAdmin"
           v-on:remove-verse="removeVerse"
         />
       </li>

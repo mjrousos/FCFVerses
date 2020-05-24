@@ -1,11 +1,7 @@
 <template>
   <div>
-    <div v-if="passagesGroups">
-      <div
-        class="row my-3"
-        v-for="group in passagesGroups"
-        :key="group.groupId"
-      >
+    <div v-if="passageGroups">
+      <div class="row my-3" v-for="group in passageGroups" :key="group.groupId">
         <VerseGroup :passages="group" />
       </div>
     </div>
@@ -30,8 +26,8 @@ export default {
     VerseGroup
   },
   computed: {
-    passagesGroups() {
-      return this.$store.getters.passages;
+    passageGroups() {
+      return this.$store.getters.passages.passageGroups;
     }
   },
   created() {

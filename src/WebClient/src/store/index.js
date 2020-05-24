@@ -9,7 +9,7 @@ var apiClient = new WebApiService();
 export default new Vuex.Store({
   state: {
     appInitialized: false,
-    passages: [],
+    passages: {},
     user: null
   },
   getters: {
@@ -40,11 +40,11 @@ export default new Vuex.Store({
       state.passages = newPassages;
     },
     updatePassagesGroup: (state, newPassagesGroup) => {
-      var index = state.passages.findIndex(
+      var index = state.passages.passageGroups.findIndex(
         g => g.groupId == newPassagesGroup.groupId
       );
       if (index >= 0) {
-        Object.assign(state.passages[index], newPassagesGroup);
+        Object.assign(state.passages.passageGroups[index], newPassagesGroup);
       }
     }
   },
@@ -53,7 +53,7 @@ export default new Vuex.Store({
       commit("setAppInitialized", true);
     },
     refreshAllPassages: async ({ commit }) => {
-      var updatedPassages = await apiClient.getPassages();
+      var updatedPassages = await apiClient.getAllPassages();
       commit("updateAllPassages", updatedPassages);
     },
     refreshGroupPassages: async ({ commit }, groupId) => {

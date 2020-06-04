@@ -81,11 +81,6 @@ namespace WebApi.Data.Models
                 return null;
             }
 
-            if (Verses.Count() == 1)
-            {
-                return Verses.First().ToString();
-            }
-
             var firstVerse = Verses.First();
             var lastVerse = Verses.Last();
             var ret = new StringBuilder();
@@ -97,22 +92,25 @@ namespace WebApi.Data.Models
                 ret.Append("b");
             }
 
-            ret.Append("-");
-
-            if (firstVerse.Book == lastVerse.Book)
+            if (Verses.Count() > 1)
             {
-                if (firstVerse.Chapter == lastVerse.Chapter)
+                ret.Append("-");
+
+                if (firstVerse.Book == lastVerse.Book)
                 {
-                    ret.Append(lastVerse.Verse);
+                    if (firstVerse.Chapter == lastVerse.Chapter)
+                    {
+                        ret.Append(lastVerse.Verse);
+                    }
+                    else
+                    {
+                        ret.Append($"{lastVerse.Chapter}:{lastVerse.Verse}");
+                    }
                 }
                 else
                 {
-                    ret.Append($"{lastVerse.Chapter}:{lastVerse.Verse}");
+                    ret.Append(lastVerse.ToString());
                 }
-            }
-            else
-            {
-                ret.Append(lastVerse.ToString());
             }
 
             if (EndOffset > 0)

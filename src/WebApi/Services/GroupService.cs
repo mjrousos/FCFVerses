@@ -130,6 +130,7 @@ namespace WebApi.Services
                 var tokens = text.Split();
                 text = string.Join(' ', tokens, reference.StartOffset, tokens.Length - (reference.StartOffset + reference.EndOffset));
             }
+
             return new Passage(reference.Id, referenceString, text, translation.ToString());
         }
 

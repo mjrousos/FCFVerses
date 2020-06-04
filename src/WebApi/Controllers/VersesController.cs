@@ -75,6 +75,11 @@ namespace WebApi.Controllers
         [HttpPut("{groupId}")]
         public async Task<ActionResult> AddPassageAsync(int groupId, [FromBody] PassageReference passage)
         {
+            if (passage.Chapter < 1 || passage.Verse < 1 || passage.Length < 1 || passage.StartOffset < 0 || passage.EndOffset < 0)
+            {
+                return BadRequest();
+            }
+
             var currentUserId = HttpContext.GetCurrentUserId();
             if (currentUserId is null)
             {

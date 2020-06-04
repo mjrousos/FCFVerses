@@ -136,7 +136,16 @@ function resetPassage() {
 }
 
 function addVerses() {
-  this.$emit("add-verses", { passage: this.passage });
+  // Copy the passage, both to change the book to an int and
+  // to avoid the passage passed to add-verses being cleared by resetPassage.
+  this.$emit("add-verses", {
+    book: Object.keys(this.verses).indexOf(this.passage.book),
+    chapter: this.passage.chapter,
+    verse: this.passage.verse,
+    length: parseInt(this.passage.length, 10),
+    startOffset: parseInt(this.passage.startOffset, 10),
+    endOffset: parseInt(this.passage.endOffset, 10)
+  });
   this.resetPassage();
 }
 

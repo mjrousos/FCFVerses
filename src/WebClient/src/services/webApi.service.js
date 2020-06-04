@@ -2,35 +2,54 @@ import axios from "axios";
 import AuthService from "./auth.service";
 
 export default class WebApiService {
-  constructor() {}
-
-  async addPassage(passage, groupId) {
-    console.log(`Adding ${JSON.stringify(passage)} to group ${groupId} for ${AuthService.getUserId(AuthService.getUser())}`);
+  constructor() {
+    this.hostUrl = "";
   }
 
-  async removePassage(passageId, groupId) {
-    console.log(`Removing passage ${passageId} from group ${groupId} for ${AuthService.getUserId(AuthService.getUser())}`);
-  }
-
-  async getAllPassages() {
-    var config = {
+  async getAuthConfig() {
+    return {
       headers: {
         authorization: `Bearer ${await AuthService.getAccessTokenAsync()}`
       }
     };
+  }
 
+  async addPassage(passage, groupId) {
+    console.log(`Adding ${JSON.stringify(passage)}`);
+    var endpoint = `${this.hostUrl}/Verses/${groupId}`;
+    var response = await axios.put(
+      endpoint,
+      passage,
+      await this.getAuthConfig()
+    );
+    if (!this.isSuccessStatusCode(response.status)) {
+      this.displayError(endpoint, response);
+      return false;
+    }
+
+    return true;
+  }
+
+  async removePassage(passageId, groupId) {
+    var endpoint = `${this.hostUrl}/Verses/${groupId}/${passageId}`;
+    var response = await axios.delete(endpoint, await this.getAuthConfig());
+    if (!this.isSuccessStatusCode(response.status)) {
+      this.displayError(endpoint, response);
+      return false;
+    }
+
+    return true;
+  }
+
+  async getAllPassages() {
     var endpoint = `${this.hostUrl}/Verses`;
+    var config = await this.getAuthConfig();
     var response = await axios.get(endpoint, config);
     try {
       if (response && this.isSuccessStatusCode(response.status)) {
         return response.data;
       } else {
-        // TODO : Alert w/ toast
-        console.error(
-          `Error response from ${endpoint}: ${response.status} ${
-            response.statusText
-          } ${JSON.stringify(response.data)}`
-        );
+        this.displayError(endpoint, response);
       }
     } catch (error) {
       console.error(`Error calling ${endpoint}: ${error.message}`);
@@ -40,24 +59,13 @@ export default class WebApiService {
   }
 
   async getPassages(groupId) {
-    var config = {
-      headers: {
-        authorization: `Bearer ${await AuthService.getAccessTokenAsync()}`
-      }
-    };
-
     var endpoint = `${this.hostUrl}/Verses/${groupId}`;
-    var response = await axios.get(endpoint, config);
+    var response = await axios.get(endpoint, await this.getAuthConfig());
     try {
       if (response && this.isSuccessStatusCode(response.status)) {
         return response.data;
       } else {
-        // TODO : Alert w/ toast
-        console.error(
-          `Error response from ${endpoint}: ${response.status} ${
-            response.statusText
-          } ${JSON.stringify(response.data)}`
-        );
+        this.displayError(endpoint, response);
       }
     } catch (error) {
       console.error(`Error calling ${endpoint}: ${error.message}`);
@@ -75,50 +83,13 @@ export default class WebApiService {
     // TODO
   }
 
-  async anonymousApi() {
-    var endpoint = `${this.hostUrl}/HelloWorld`;
-    var response = await axios.get(endpoint);
-    try {
-      if (response && this.isSuccessStatusCode(response.status)) {
-        return response.data;
-      } else {
-        console.error(
-          `Error response from ${endpoint}: ${response.status} ${
-            response.statusText
-          } ${JSON.stringify(response.data)}`
-        );
-      }
-    } catch (error) {
-      console.error(`Error calling ${endpoint}: ${error.message}`);
-    }
-
-    return null;
-  }
-
-  async authorizedApi() {
-    var config = {
-      headers: {
-        authorization: `Bearer ${await AuthService.getAccessTokenAsync()}`
-      }
-    };
-
-    var endpoint = `${this.hostUrl}/HelloWorld/Secure`;
-    var response = await axios.get(endpoint, config);
-    try {
-      if (response && this.isSuccessStatusCode(response.status)) {
-        return response.data;
-      } else {
-        console.error(
-          `Error response from ${endpoint}: ${response.status} ${
-            response.statusText
-          } ${JSON.stringify(response.data)}`
-        );
-      }
-    } catch (error) {
-      console.error(`Error calling ${endpoint}: ${error.message}`);
-    }
-
-    return null;
+  displayError(endpoint, response) {
+    // TODO : Alert w/ toast
+    console.error(
+      `Error response from ${endpoint}: ${response.status} ${
+        response.statusText
+      } ${JSON.stringify(response.data)}`
+    );
   }
 
   isSuccessStatusCode = statusCode => statusCode / 100 == 2;

@@ -49,13 +49,20 @@ var apiClient = new WebApiService();
 
 async function addVerses(passage) {
   this.showAddVerses = false;
-  await apiClient.addPassage(passage, this.passages.groupId);
-  this.$store.dispatch("refreshGroupPassages", this.passages.groupId);
+  if (await apiClient.addPassage(passage, this.passages.groupId)) {
+    this.$store.dispatch("refreshGroupPassages", this.passages.groupId);
+  } else {
+    // Alert of problem via toast
+  }
 }
 
 async function removeVerse(passageId) {
-  await apiClient.removePassage(passageId, this.passages.groupId);
-  this.$store.dispatch("refreshGroupPassages", this.passages.groupId);
+  this.passages.passages = this.passages.passages.filter(
+    value => value.passageId != passageId
+  );
+  if (!(await apiClient.removePassage(passageId, this.passages.groupId))) {
+    // Alert of problem via toast
+  }
 }
 
 export default {

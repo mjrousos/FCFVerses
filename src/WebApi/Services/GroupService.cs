@@ -105,7 +105,7 @@ namespace WebApi.Services
                 return null;
             }
 
-            var passageTasks = group.PassageReferences.Select(r => GetPassageAsync(r, translation));
+            var passageTasks = group.PassageReferences.OrderByDescending(r => r.CreatedDate).Select(r => GetPassageAsync(r, translation));
             var passages = await Task.WhenAll(passageTasks);
 
             Logger.LogInformation("Retrieved {PassageCount} passages for group {GroupId}", passages.Length, groupId);
@@ -123,7 +123,14 @@ namespace WebApi.Services
 
             var passageVerses = await VerseService.GetVersesAsync(reference.Verses, translation);
             Logger.LogInformation("Retrieved {VerseCount} verses for {PassageReference}", passageVerses.Count(), reference);
-            return new Passage(reference.Id, referenceString, string.Join(' ', passageVerses.Select(v => v.Text)), translation.ToString());
+
+            var text = string.Join(' ', passageVerses.Select(v => v.Text));
+            if (reference.StartOffset > 0 || reference.EndOffset > 0)
+            {
+                var tokens = text.Split();
+                text = string.Join(' ', tokens, reference.StartOffset, tokens.Length - (reference.StartOffset + reference.EndOffset));
+            }
+            return new Passage(reference.Id, referenceString, text, translation.ToString());
         }
 
         public async Task<IEnumerable<GroupViewModel>> GetAllPublicGroupsAsync() =>

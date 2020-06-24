@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="row" v-if="showAddVerses">
-        <AddVerses v-on:add-verses="addVerses" />
+        <AddVerses v-on:add-verses="addVerses" ref="addVerses" />
       </div>
     </div>
     <ul class="list-group list-group-flush" v-if="passages.passages.length > 0">
@@ -48,12 +48,14 @@ import WebApiService from "../services/webApi.service";
 var apiClient = new WebApiService();
 
 async function addVerses(passage) {
-  this.showAddVerses = false;
+  this.$refs.addVerses.disable();
   if (await apiClient.addPassage(passage, this.passages.groupId)) {
     this.$store.dispatch("refreshGroupPassages", this.passages.groupId);
   } else {
     // Alert of problem via toast
   }
+  this.$refs.addVerses.enable();
+  this.showAddVerses = false;
 }
 
 async function removeVerse(passageId) {

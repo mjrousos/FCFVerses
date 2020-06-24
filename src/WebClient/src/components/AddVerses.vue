@@ -108,13 +108,14 @@
                 passage.book &&
                 passage.chapter &&
                 passage.verse &&
-                passage.length > 0
+                passage.length > 0 &&
+                enabled
               )
             "
             class="btn btn-primary"
             v-on:click.prevent="addVerses"
           >
-            Add
+            {{ buttonLabel }}
           </button>
         </div>
       </form>
@@ -149,9 +150,20 @@ function addVerses() {
   this.resetPassage();
 }
 
+function disable() {
+  this.enabled = false;
+}
+
+function enable() {
+  this.enabled = true;
+}
+
 export default {
   name: "addVerses",
   computed: {
+    buttonLabel() {
+      return this.enabled ? "Add" : "Adding...";
+    },
     chapterNumbers() {
       if (!this.passage.book) {
         return [];
@@ -175,6 +187,7 @@ export default {
   },
   data: function() {
     return {
+      enabled: true,
       verses: VerseCounts,
       passage: {
         book: "",
@@ -187,6 +200,8 @@ export default {
     };
   },
   methods: {
+    disable,
+    enable,
     addVerses,
     resetPassage
   }
